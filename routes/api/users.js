@@ -7,14 +7,16 @@ const config = require('config');
 const User = require('../../models/User');
 
 
-router.post('/'), 
+router.post('/', 
 async (req, res) => {
     try {
+        console.log("hello");
         const { email, username, password } = req.body;
 
-        let user = User.findOne({ email: email });
+        let user = await User.findOne({ email });
 
         if (user) {
+            console.log("User already exists", user.email);
             return res.status(400).json({ msg: 'User already exists' });
         }
         
@@ -49,4 +51,6 @@ async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
-}
+});
+
+module.exports = router;
