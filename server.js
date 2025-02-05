@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const connectDB = require('./config/db');
 
 const app = express();
 const httpServer = createServer(app);
@@ -12,8 +13,13 @@ const io = new Server(httpServer, {
   }
 });
 
+// Connect Database
+connectDB();
+
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/users', require('./routes/api/users'));
 
 // Store connected users and messages
 const users = new Map();
